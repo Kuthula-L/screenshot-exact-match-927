@@ -10,9 +10,6 @@ import { SiteFooter } from "@/components/SiteFooter";
 import type { Product } from "@/data/products";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    enquire: typeof search['enquire'] === "string" ? (search['enquire'] as string) : undefined,
-  }),
   head: () => ({
     meta: [
       { title: "Aadmoz | Curated Clothing in Kempton Park, Gauteng" },
@@ -49,15 +46,18 @@ const CATEGORY_STRIP = [
 ];
 
 function Home() {
-  const { enquire } = Route.useSearch();
   const { data: products = [] } = useQuery(productsQueryOptions);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    const enquire = new URLSearchParams(window.location.search).get("enquire");
     if (!enquire) return;
     setMessage(`I'd like to find out more about the ${enquire}.`);
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  }, [enquire]);
+    window.setTimeout(
+      () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }),
+      100,
+    );
+  }, []);
 
   const handleEnquire = (product: Product) => {
     setMessage(`I'd like to find out more about the ${product.name}.`);

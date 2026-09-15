@@ -36,7 +36,7 @@ function ShopPage() {
   const visible = filter === "All" ? products : products.filter((p) => p.category === filter);
 
   const enquire = (product: Product) => {
-    navigate({ to: "/", search: { enquire: product.name }, hash: "contact" });
+    navigate({ to: "/", search: { enquire: product.name } as never, hash: "contact" });
   };
 
   return (
