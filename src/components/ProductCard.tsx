@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Shirt, Footprints, Watch, PanelBottom } from "lucide-react";
 import type { Product } from "@/data/products";
 import { formatZar } from "@/lib/products";
@@ -17,13 +18,16 @@ export function ProductCard({
   onEnquire: (product: Product) => void;
 }) {
   const Icon = categoryIcon[product.category] ?? Shirt;
+  const [imageFailed, setImageFailed] = useState(false);
+  const showImage = Boolean(product.image) && !imageFailed;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-card transition-shadow duration-300 hover:shadow-lift">
       <div className="relative aspect-4/5 overflow-hidden">
-        {product.image ? (
+        {showImage ? (
           <img
-            src={product.image}
+            src={product.image as string}
+            onError={() => setImageFailed(true)}
             alt={product.name}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
